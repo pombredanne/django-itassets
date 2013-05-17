@@ -16,5 +16,3 @@ notifications:
  email:
   recipients:
    - github@cschwede.de
-  on_success: [change]
-  on_failure: [change]
