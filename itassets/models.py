@@ -56,6 +56,10 @@ class Hardware(models.Model):
     class Meta:
         verbose_name_plural = _("Hardware")
 
+    def persons(self):
+        return ', '.join([str(p) for p in self.person.all()])
+    persons.short_description = "Persons"
+
 
 class Vendor(models.Model):
     name = models.CharField(max_length=250)

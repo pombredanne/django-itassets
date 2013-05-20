@@ -65,8 +65,10 @@ class ModelTests(TestCase):
             'Software (1 remaining, expires %s)' % self.expires)
         self.assertEqual(str(self.support),
             'Maker Model (Me, Room) (expires %s)' % self.expires)
+        self.assertEqual(self.hardware.persons(), 'Me')
         self.hardware.person.clear()
         self.assertEqual(str(self.hardware), 'Maker Model (Room)')
+        self.assertEqual(self.hardware.persons(), '')
 
     def test_remaining_licenses(self):
         self.assertEqual(self.license.remaining(), 1)
