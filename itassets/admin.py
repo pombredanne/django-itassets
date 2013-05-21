@@ -65,7 +65,7 @@ class LicenseAdmin(admin.ModelAdmin):
 class SupportContractAdmin(admin.ModelAdmin):
     list_display = ('hardware', 'expires', 'note')
     sort_list = ('hardware', 'expires', )
-    list_filter = (ExpireFilter, )
+    list_filter = (ExpireFilter, 'hardware__hardware_group')
 
 
 class LicenseHardwareInline(admin.TabularInline):
@@ -88,7 +88,7 @@ class SoftwareAdmin(admin.ModelAdmin):
         return u'%s' % (obj, )
     full_name.short_description = 'Name'
 
-    list_display = ('full_name', 'note')
+    list_display = ('full_name', 'note', 'licenses')
     list_filter = ('maker', )
 
 

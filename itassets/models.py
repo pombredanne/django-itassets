@@ -81,6 +81,10 @@ class Software(models.Model):
     class Meta:
         verbose_name_plural = _("Software")
 
+    def licenses(self):
+        return sum([l.remaining() for l in self.license_set.all()])
+    licenses.short_description = "Remaining licenses"
+
 
 class License(models.Model):
     software = models.ForeignKey(Software)
@@ -98,6 +102,9 @@ class License(models.Model):
         return u'%s (%s remaining, expires %s)' % (self.software.name,
                                                    remaining,
                                                    self.expires)
+
+    class Meta:
+        ordering = ('software', )
 
 
 class SupportContract(models.Model):
