@@ -57,13 +57,13 @@ class ExpireFilter(SimpleListFilter):
 
 class LicenseAdmin(admin.ModelAdmin):
     filter_horizontal = ('hardware', 'person')
-    list_display = ('software', 'expires', 'count', 'remaining', 'note')
+    list_display = ('software', 'expires', 'count', 'remaining', 'note', 'inventory_id')
     sort_list = ('software', 'expires', 'count', 'remaining')
     list_filter = (RemainingListFilter, ExpireFilter)
 
 
 class SupportContractAdmin(admin.ModelAdmin):
-    list_display = ('hardware', 'expires', 'note')
+    list_display = ('hardware', 'expires', 'note', 'inventory_id')
     sort_list = ('hardware', 'expires', )
     list_filter = (ExpireFilter, 'hardware__hardware_group')
 
@@ -77,7 +77,7 @@ class HardwareAdmin(admin.ModelAdmin):
         return u'%s' % (obj, )
     full_name.short_description = 'Name'
 
-    list_display = ('full_name', 'note', 'persons', 'location')
+    list_display = ('full_name', 'note', 'persons', 'location', 'inventory_id')
     list_filter = ('maker', 'hardware_group')
     inlines = [LicenseHardwareInline, ]
     filter_horizontal = ('person', )
@@ -88,7 +88,7 @@ class SoftwareAdmin(admin.ModelAdmin):
         return u'%s' % (obj, )
     full_name.short_description = 'Name'
 
-    list_display = ('full_name', 'note', 'licenses')
+    list_display = ('full_name', 'note', 'licenses', 'inventory_id')
     list_filter = ('maker', )
 
 

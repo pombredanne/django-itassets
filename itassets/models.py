@@ -43,6 +43,7 @@ class Hardware(models.Model):
     maker = models.ForeignKey(Maker)
     person = models.ManyToManyField(Person, blank=True, null=True)
     note = models.TextField(blank=True, null=True)
+    inventory_id = models.CharField(max_length=100, blank=True, null=True)
 
     def __unicode__(self):
         if self.person.all():
@@ -74,6 +75,7 @@ class Software(models.Model):
     name = models.CharField(max_length=250)
     maker = models.ForeignKey(Maker)
     note = models.TextField(blank=True, null=True)
+    inventory_id = models.CharField(max_length=100, blank=True, null=True)
 
     def __unicode__(self):
         return u'%s %s' % (self.maker, self.name)
@@ -93,6 +95,7 @@ class License(models.Model):
     hardware = models.ManyToManyField(Hardware, blank=True, null=True)
     person = models.ManyToManyField(Person, blank=True, null=True)
     note = models.TextField(blank=True, null=True)
+    inventory_id = models.CharField(max_length=100, blank=True, null=True)
 
     def remaining(self):
         return (self.count - self.hardware.count() - self.person.count())
@@ -111,6 +114,7 @@ class SupportContract(models.Model):
     hardware = models.ForeignKey(Hardware)
     expires = models.DateField()
     note = models.TextField(blank=True, null=True)
+    inventory_id = models.CharField(max_length=100, blank=True, null=True)
 
     def __unicode__(self):
         return u'%s (expires %s)' % (self.hardware, self.expires)
