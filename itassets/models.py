@@ -44,6 +44,7 @@ class Hardware(models.Model):
     person = models.ManyToManyField(Person, blank=True, null=True)
     note = models.TextField(blank=True, null=True)
     inventory_id = models.CharField(max_length=100, blank=True, null=True)
+    hostname = models.CharField(max_length=250, blank=True, null=True)
 
     def __unicode__(self):
         if self.person.all():

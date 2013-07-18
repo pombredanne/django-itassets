@@ -74,11 +74,11 @@ class LicenseHardwareInline(admin.TabularInline):
 
 
 class HardwareAdmin(admin.ModelAdmin):
-    list_display = ('full_name', 'note', 'persons', 'location', 'inventory_id', 'maker', 'hardware_group')
+    list_display = ('full_name', 'note', 'persons', 'location', 'inventory_id', 'maker', 'hardware_group', 'hostname')
     list_filter = ('maker', 'hardware_group')
     inlines = [LicenseHardwareInline, ]
     filter_horizontal = ('person', )
-    search_fields = ['name', 'person__name', 'maker__name', 'inventory_id', 'note']
+    search_fields = ['name', 'person__name', 'maker__name', 'inventory_id', 'note', 'hostname']
 
 class SoftwareAdmin(admin.ModelAdmin):
     def full_name(self, obj):
