@@ -55,17 +55,7 @@ class Hardware(models.Model):
     owner = models.ForeignKey(Owner)
 
     def __unicode__(self):
-        if self.person.all():
-            names = ', '.join([str(p) for p in self.person.all()])
-            return u'%s %s (%s, %s)' % (self.maker,
-                                        self.name,
-                                        names,
-                                        self.location)
-        return u'%s %s (%s)' % (self.maker, self.name, self.location)
-
-    def full_name(self):
-        return u'%s' % (self, )
-    full_name.short_description = 'Name'
+        return u'%s %s' % (self.maker, self.name)
 
     class Meta:
         verbose_name_plural = _("Hardware")
