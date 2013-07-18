@@ -74,11 +74,7 @@ class LicenseHardwareInline(admin.TabularInline):
 
 
 class HardwareAdmin(admin.ModelAdmin):
-    def full_name(self, obj):
-        return u'%s' % (obj, )
-    full_name.short_description = 'Name'
-
-    list_display = ('full_name', 'note', 'persons', 'location', 'inventory_id')
+    list_display = ('full_name', 'note', 'persons', 'location', 'inventory_id', 'maker', 'hardware_group')
     list_filter = ('maker', 'hardware_group')
     inlines = [LicenseHardwareInline, ]
     filter_horizontal = ('person', )

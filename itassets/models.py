@@ -54,6 +54,10 @@ class Hardware(models.Model):
                                         self.location)
         return u'%s %s (%s)' % (self.maker, self.name, self.location)
 
+    def full_name(self):
+        return u'%s' % (self, )
+    full_name.short_description = 'Name'
+
     class Meta:
         verbose_name_plural = _("Hardware")
 
