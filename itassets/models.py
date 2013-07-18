@@ -36,6 +36,13 @@ class Location(models.Model):
         return u'%s' % (self.name, )
 
 
+class Owner(models.Model):
+    name = models.CharField(max_length=250)
+
+    def __unicode__(self):
+        return self.name
+
+
 class Hardware(models.Model):
     name = models.CharField(max_length=250)
     location = models.ForeignKey(Location)
@@ -45,6 +52,7 @@ class Hardware(models.Model):
     note = models.TextField(blank=True, null=True)
     inventory_id = models.CharField(max_length=100, blank=True, null=True)
     hostname = models.CharField(max_length=250, blank=True, null=True)
+    owner = models.ForeignKey(Owner)
 
     def __unicode__(self):
         if self.person.all():

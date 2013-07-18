@@ -9,7 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.admin import SimpleListFilter
 
 from datetime import date, timedelta
-from .models import License, Person, Software, Hardware, Vendor
+from .models import License, Person, Software, Hardware, Vendor, Owner
 from .models import SupportContract, Location, HardwareGroup, Maker
 
 
@@ -74,8 +74,8 @@ class LicenseHardwareInline(admin.TabularInline):
 
 
 class HardwareAdmin(admin.ModelAdmin):
-    list_display = ('full_name', 'note', 'persons', 'location', 'inventory_id', 'maker', 'hardware_group', 'hostname')
-    list_filter = ('maker', 'hardware_group')
+    list_display = ('full_name', 'note', 'persons', 'location', 'inventory_id', 'maker', 'hardware_group', 'hostname', 'owner')
+    list_filter = ('maker', 'hardware_group', 'owner')
     inlines = [LicenseHardwareInline, ]
     filter_horizontal = ('person', )
     search_fields = ['name', 'person__name', 'maker__name', 'inventory_id', 'note', 'hostname']
@@ -111,6 +111,10 @@ class PersonAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
 
+class OwnerAdmin(admin.ModelAdmin):
+    list_display = ('name', )
+
+
 admin.site.register(HardwareGroup)
 admin.site.register(Maker)
 admin.site.register(Location, LocationAdmin)
@@ -120,3 +124,4 @@ admin.site.register(Vendor, VendorAdmin)
 admin.site.register(SupportContract, SupportContractAdmin)
 admin.site.register(Person, PersonAdmin)
 admin.site.register(License, LicenseAdmin)
+admin.site.register(Owner, OwnerAdmin)
