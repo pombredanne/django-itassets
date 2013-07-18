@@ -60,6 +60,7 @@ class LicenseAdmin(admin.ModelAdmin):
     list_display = ('software', 'expires', 'count', 'remaining', 'note', 'inventory_id')
     sort_list = ('software', 'expires', 'count', 'remaining')
     list_filter = (RemainingListFilter, ExpireFilter)
+    search_fields = ['inventory_id', 'person__name', 'hardware__person__name']
 
 
 class SupportContractAdmin(admin.ModelAdmin):
@@ -81,7 +82,7 @@ class HardwareAdmin(admin.ModelAdmin):
     list_filter = ('maker', 'hardware_group')
     inlines = [LicenseHardwareInline, ]
     filter_horizontal = ('person', )
-
+    search_fields = ['name', 'person__name', 'maker__name', 'inventory_id', 'note']
 
 class SoftwareAdmin(admin.ModelAdmin):
     def full_name(self, obj):
@@ -90,6 +91,7 @@ class SoftwareAdmin(admin.ModelAdmin):
 
     list_display = ('full_name', 'note', 'licenses', 'inventory_id')
     list_filter = ('maker', )
+    search_fields = ['name', 'inventory_id', 'note']
 
 
 class LocationAdmin(admin.ModelAdmin):
@@ -110,6 +112,7 @@ class LicensePersonInline(admin.TabularInline):
 
 class PersonAdmin(admin.ModelAdmin):
     inlines = [HardwarePersonInline, LicensePersonInline, ]
+    search_fields = ['name']
 
 
 admin.site.register(HardwareGroup)
