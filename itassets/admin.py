@@ -12,8 +12,8 @@ from django.core import serializers
 
 
 from datetime import date, timedelta
-from .models import License, Person, Software, Hardware, Vendor, Owner
-from .models import SupportContract, Location, HardwareGroup, Maker
+from .models import License, Person, Software, Hardware, Vendor, Owner, Maker
+from .models import SupportContract, Location, HardwareGroup, ExportToken
 
 
 class RemainingListFilter(SimpleListFilter):
@@ -131,6 +131,12 @@ class OwnerAdmin(admin.ModelAdmin):
     list_display = ('name', )
 
 
+class ExportTokenAdmin(admin.ModelAdmin):
+    list_display = ('token', 'note', )
+    fields = ['token', 'note',]
+    readonly_fields = ['token', ]
+
+
 admin.site.register(HardwareGroup)
 admin.site.register(Maker)
 admin.site.register(Location, LocationAdmin)
@@ -141,3 +147,4 @@ admin.site.register(SupportContract, SupportContractAdmin)
 admin.site.register(Person, PersonAdmin)
 admin.site.register(License, LicenseAdmin)
 admin.site.register(Owner, OwnerAdmin)
+admin.site.register(ExportToken, ExportTokenAdmin)

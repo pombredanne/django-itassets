@@ -3,6 +3,9 @@
 
 # pylint:disable=W0232,R0903,E1101
 
+import random
+import string
+
 from django.utils.translation import ugettext as _
 from django.db import models
 
@@ -121,3 +124,12 @@ class SupportContract(models.Model):
 
     def __unicode__(self):
         return u'%s (expires %s)' % (self.hardware, self.expires)
+
+
+def new_token():
+    return ''.join(random.choice(string.ascii_letters + string.digits) for x in range(32)) 
+
+
+class ExportToken(models.Model):
+    token = models.CharField(max_length=100, default=new_token, editable=False)
+    note = models.CharField(max_length=100, blank=True, null=True)
