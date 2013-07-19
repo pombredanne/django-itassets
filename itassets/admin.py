@@ -7,6 +7,9 @@ from django.db.models import Count
 from django.db.models import F
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.admin import SimpleListFilter
+from django.http import HttpResponse
+from django.core import serializers
+
 
 from datetime import date, timedelta
 from .models import License, Person, Software, Hardware, Vendor, Owner
@@ -73,6 +76,12 @@ class LicenseHardwareInline(admin.TabularInline):
     model = License.hardware.through
 
 
+def export_as_json(modeladmin, request, queryset):
+    response = HttpResponse(content_type="application/json")
+    serializers.serialize("json", queryset, stream=response)
+    return response
+
+
 class HardwareAdmin(admin.ModelAdmin):
     def full_name(self, obj):
         return u'%s' % (obj, )
@@ -83,6 +92,9 @@ class HardwareAdmin(admin.ModelAdmin):
     inlines = [LicenseHardwareInline, ]
     filter_horizontal = ('person', )
     search_fields = ['name', 'person__name', 'maker__name', 'inventory_id', 'note', 'hostname']
+
+    actions = [export_as_json]
+
 
 class SoftwareAdmin(admin.ModelAdmin):
     def full_name(self, obj):
