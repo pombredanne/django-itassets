@@ -61,14 +61,12 @@ class ExpireFilter(SimpleListFilter):
 class LicenseAdmin(admin.ModelAdmin):
     filter_horizontal = ('hardware', 'person')
     list_display = ('software', 'expires', 'count', 'remaining', 'note', 'inventory_id')
-    sort_list = ('software', 'expires', 'count', 'remaining')
     list_filter = (RemainingListFilter, ExpireFilter)
     search_fields = ['inventory_id', 'person__name', 'hardware__person__name']
 
 
 class SupportContractAdmin(admin.ModelAdmin):
     list_display = ('hardware', 'expires', 'note', 'inventory_id')
-    sort_list = ('hardware', 'expires', )
     list_filter = (ExpireFilter, 'hardware__hardware_group')
 
 

@@ -16,6 +16,9 @@ class HardwareGroup(models.Model):
     def __unicode__(self):
         return self.name
 
+    class Meta:
+        ordering = ('name', )
+
 
 class Maker(models.Model):
     name = models.CharField(max_length=250)
@@ -23,12 +26,18 @@ class Maker(models.Model):
     def __unicode__(self):
         return self.name
 
+    class Meta:
+        ordering = ('name', )
+
 
 class Person(models.Model):
     name = models.CharField(max_length=250)
 
     def __unicode__(self):
         return self.name
+
+    class Meta:
+        ordering = ('name', )
 
 
 class Location(models.Model):
@@ -38,12 +47,18 @@ class Location(models.Model):
     def __unicode__(self):
         return u'%s' % (self.name, )
 
+    class Meta:
+        ordering = ('name', )
+
 
 class Owner(models.Model):
     name = models.CharField(max_length=250)
 
     def __unicode__(self):
         return self.name
+
+    class Meta:
+        ordering = ('name', )
 
 
 class Hardware(models.Model):
@@ -62,6 +77,7 @@ class Hardware(models.Model):
 
     class Meta:
         verbose_name_plural = _("Hardware")
+        ordering = ('maker', 'name', )
 
     def persons(self):
         return ', '.join([str(p) for p in self.person.all()])
@@ -74,6 +90,9 @@ class Vendor(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    class Meta:
+        ordering = ('name', )
 
 
 class Software(models.Model):
@@ -88,6 +107,7 @@ class Software(models.Model):
 
     class Meta:
         verbose_name_plural = _("Software")
+        ordering = ('maker', 'name', )
 
     def licenses(self):
         return sum([l.remaining() for l in self.license_set.all()])
@@ -111,7 +131,6 @@ class License(models.Model):
         return u'%s (%s remaining, expires %s)' % (self.software.name,
                                                    remaining,
                                                    self.expires)
-
     class Meta:
         ordering = ('software', )
 
@@ -124,6 +143,9 @@ class SupportContract(models.Model):
 
     def __unicode__(self):
         return u'%s (expires %s)' % (self.hardware, self.expires)
+
+    class Meta:
+        ordering = ('hardware', )
 
 
 def new_token():
