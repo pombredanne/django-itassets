@@ -8,6 +8,7 @@ import string
 
 from django.utils.translation import ugettext as _
 from django.db import models
+from django.db.models import Sum 
 
 
 class HardwareGroup(models.Model):
@@ -118,21 +119,33 @@ class License(models.Model):
     software = models.ForeignKey(Software)
     expires = models.DateField()
     count = models.IntegerField(default=1)
-    hardware = models.ManyToManyField(Hardware, blank=True, null=True)
+    hardware = models.ManyToManyField(Hardware, blank=True, null=True,
+                                      through='License2Hardware')
     person = models.ManyToManyField(Person, blank=True, null=True)
     note = models.TextField(blank=True, null=True)
     inventory_id = models.CharField(max_length=100, blank=True, null=True)
 
     def remaining(self):
-        return (self.count - self.hardware.count() - self.person.count())
+        result = License2Hardware.objects.filter(license=self)
+        result = result.aggregate(consumed=Sum('consumes'))
+        try:
+            hardware_count = int(result.get('consumed'))
+        except TypeError:
+            hardware_count = 0
+        return (self.count - hardware_count - self.person.count())
 
     def __unicode__(self):
-        remaining = self.count - self.hardware.count() - self.person.count()
         return u'%s (%s remaining, expires %s)' % (self.software.name,
-                                                   remaining,
+                                                   self.remaining(),
                                                    self.expires)
     class Meta:
         ordering = ('software', )
+
+
+class License2Hardware(models.Model):
+    hardware = models.ForeignKey(Hardware)
+    license = models.ForeignKey(License)
+    consumes = models.IntegerField(default=1)
 
 
 class SupportContract(models.Model):

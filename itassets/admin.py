@@ -14,6 +14,7 @@ from django.core import serializers
 from datetime import date, timedelta
 from .models import License, Person, Software, Hardware, Vendor, Owner, Maker
 from .models import SupportContract, Location, HardwareGroup, ExportToken
+from .models import License2Hardware
 
 
 class RemainingListFilter(SimpleListFilter):
@@ -75,20 +76,22 @@ class ExpireFilter(SimpleListFilter):
         return queryset
 
 
+class HardwareLicenseInline(admin.TabularInline):
+    model = License.hardware.through
+
+
 class LicenseAdmin(admin.ModelAdmin):
     filter_horizontal = ('hardware', 'person')
     list_display = ('software', 'expires', 'count', 'remaining', 'note', 'inventory_id')
     list_filter = (RemainingListFilter, ExpireFilter)
     search_fields = ['inventory_id', 'person__name', 'hardware__person__name']
-
+    inlines = [HardwareLicenseInline, ]
+     
 
 class SupportContractAdmin(admin.ModelAdmin):
     list_display = ('hardware', 'expires', 'note', 'inventory_id')
     list_filter = (ExpireFilter, 'hardware__hardware_group')
-
-
-class LicenseHardwareInline(admin.TabularInline):
-    model = License.hardware.through
+    search_fields = ['inventory_id', 'hardware__name', 'hardware__maker__name', 'note']
 
 
 def export_as_json(modeladmin, request, queryset):
@@ -104,9 +107,9 @@ class HardwareAdmin(admin.ModelAdmin):
  
     list_display = ('full_name', 'note', 'persons', 'location', 'inventory_id', 'maker', 'hardware_group', 'hostname', 'owner')
     list_filter = ('maker', 'hardware_group', 'owner')
-    inlines = [LicenseHardwareInline, ]
     filter_horizontal = ('person', )
     search_fields = ['name', 'person__name', 'maker__name', 'inventory_id', 'note', 'hostname']
+    inlines = [HardwareLicenseInline, ]
 
     actions = [export_as_json]
 
