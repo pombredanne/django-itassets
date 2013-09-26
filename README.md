@@ -4,8 +4,7 @@ django-itassets
 
 [![Build Status](https://travis-ci.org/cschwede/django-itassets.png?branch=master)](https://travis-ci.org/cschwede/django-itassets)
 
-Sometimes a simple solution is all you need. This Django app can be
-used to track your IT licenses and support contracts.
+Django app to track your IT licenses and support contracts.
 
 Basically these are just some models and admin hooks for Django. Using the
 Django admin interface you can track your expiring software licenses and 
@@ -14,8 +13,9 @@ items which gives you a number of your remaining unused licenses.
 
 Test coverage is verified with https://pypi.python.org/pypi/coverage
 
-
 ![License overview](https://github.com/cschwede/django-itassets/blob/master/screenshots/licenses.png?raw=true)
+
+Grappelli is used to improve the admin interface.
 
 
 Quick start
@@ -27,6 +27,7 @@ Quick start
 
     INSTALLED_APPS = (
         ...
+        'grappelli'
         'itassets',
     )
 
