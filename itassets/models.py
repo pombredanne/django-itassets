@@ -72,8 +72,8 @@ class Hardware(models.Model):
     note = models.TextField(blank=True, null=True)
     inventory_id = models.CharField(max_length=100, blank=True, null=True)
     hostname = models.CharField(max_length=250, blank=True, null=True)
-    owner = models.ForeignKey(Owner)
-
+    owner = models.ForeignKey(Owner, default=1)
+ 
     def __unicode__(self):
         return u'%s %s' % (self.maker, self.name)
 
