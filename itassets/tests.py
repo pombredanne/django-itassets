@@ -40,7 +40,6 @@ def common_setup(self):
     self.license = License.objects.create(software=self.software,
                                           expires=self.expires,
                                           count=3)
-    self.license.hardware.add(self.hardware)
     self.license.person.add(self.person)
 
     self.support = SupportContract.objects.create(hardware=self.hardware,
@@ -54,7 +53,7 @@ class ModelTests(TestCase):
         common_setup(self)
 
     def test_unicode(self):
-        self.assertEqual(str(self.hardware), 'Maker Model (Me, Room)')
+        self.assertEqual(str(self.hardware), 'Maker Model')
         self.assertEqual(str(self.hardware_group), 'Notebook')
         self.assertEqual(str(self.maker), 'Maker')
         self.assertEqual(str(self.person), 'Me')
@@ -62,16 +61,16 @@ class ModelTests(TestCase):
         self.assertEqual(str(self.vendor), 'Someone')
         self.assertEqual(str(self.software), 'Maker Software')
         self.assertEqual(str(self.license),
-            'Software (1 remaining, expires %s)' % self.expires)
+            'Software (2 remaining, expires %s)' % self.expires)
         self.assertEqual(str(self.support),
-            'Maker Model (Me, Room) (expires %s)' % self.expires)
+            'Maker Model (expires %s)' % self.expires)
         self.assertEqual(self.hardware.persons(), 'Me')
         self.hardware.person.clear()
-        self.assertEqual(str(self.hardware), 'Maker Model (Room)')
+        self.assertEqual(str(self.hardware), 'Maker Model')
         self.assertEqual(self.hardware.persons(), '')
 
     def test_remaining_licenses(self):
-        self.assertEqual(self.license.remaining(), 1)
+        self.assertEqual(self.license.remaining(), 2)
 
 
 class AdminTests(TestCase):
@@ -85,7 +84,7 @@ class AdminTests(TestCase):
     def test_full_name(self):
         hwadmin = HardwareAdmin(self.hardware, self.site)
         self.assertEqual(hwadmin.full_name(self.hardware),
-            'Maker Model (Me, Room)')
+            'Maker Model')
 
         swadmin = SoftwareAdmin(self.software, self.site)
         self.assertEqual(swadmin.full_name(self.software),
