@@ -22,11 +22,16 @@ class RemainingListFilter(SimpleListFilter):
 
     def lookups(self, request, model_admin):
         return (
+            ('0', '<= 0'),
             ('5', '<= 5'),
             ('10', '<= 10'),
             )
 
     def queryset(self, request, queryset):
+        if self.value() == '0':
+            return queryset.annotate(
+                used_licenses=Count('hardware')).filter(
+                used_licenses__gte=F('count'))
         if self.value() == '5':
             return queryset.annotate(
                 used_licenses=Count('hardware')).filter(
