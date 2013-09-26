@@ -96,7 +96,7 @@ class AdminTests(TestCase):
         rlf = RemainingListFilter(self.request, {},
                                   self.license, license_admin)
         self.assertEqual(rlf.lookups(self.request, license_admin),
-                         (('5', '<= 5'), ('10', '<= 10')))
+                         (('0', '<= 0'), ('5', '<= 5'), ('10', '<= 10')))
 
         licenses = License.objects.all()
         self.assertEqual(rlf.queryset(self.request, licenses), licenses)
@@ -116,7 +116,9 @@ class AdminTests(TestCase):
         rlf = ExpireFilter(self.request, {}, self.license, license_admin)
         self.assertEqual(rlf.lookups(self.request, license_admin), (
             ('expired', 'Already expired'),
-            ('6weeks', 'Within 6 weeks'),)
+            ('6weeks', 'Within 6 weeks'),
+            ('3months', 'Within 3 months'),
+            ('nextyear', 'Next year'))
         )
 
         licenses = License.objects.all()
