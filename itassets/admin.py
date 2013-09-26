@@ -51,6 +51,8 @@ class ExpireFilter(SimpleListFilter):
         return (
             ('expired', 'Already expired'),
             ('6weeks', 'Within 6 weeks'),
+            ('3months', 'Within 3 months'),
+            ('nextyear', 'Next year'),
             )
 
     def queryset(self, request, queryset):
@@ -60,6 +62,16 @@ class ExpireFilter(SimpleListFilter):
         if self.value() == '6weeks':
             soon = (date.today() + timedelta(42)).strftime('%Y-%m-%d')
             return queryset.filter(expires__lte=soon)
+        if self.value() == '3months':
+            soon = (date.today() + timedelta(90)).strftime('%Y-%m-%d')
+            return queryset.filter(expires__lte=soon)
+        if self.value() == 'nextyear':
+            today = date.today()
+            next_year = date(today.year + 1, 1, 1)
+            two_years = date(today.year + 2, 1, 1)
+            return queryset.filter(expires__gte=next_year,
+            expires__lte=two_years)
+
         return queryset
 
 
