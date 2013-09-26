@@ -18,6 +18,7 @@ setup(
     url = 'https://github.com/cschwede/django-itassets',
     author = 'Christian Schwede',
     author_email = 'info@cschwede.de',
+    install_requires=['django>=1.5', 'django-grappelli'],
     classifiers = [
         'Environment :: Web Environment',
         'Framework :: Django',
