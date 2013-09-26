@@ -5,6 +5,7 @@
 
 import random
 import string
+import datetime
 
 from django.utils.translation import ugettext as _
 from django.db import models
@@ -117,7 +118,7 @@ class Software(models.Model):
 
 class License(models.Model):
     software = models.ForeignKey(Software)
-    expires = models.DateField()
+    expires = models.DateField(default=datetime.date(2100, 1, 1))
     count = models.IntegerField(default=1)
     hardware = models.ManyToManyField(Hardware, blank=True, null=True,
                                       through='License2Hardware')
@@ -150,7 +151,7 @@ class License2Hardware(models.Model):
 
 class SupportContract(models.Model):
     hardware = models.ForeignKey(Hardware)
-    expires = models.DateField()
+    expires = models.DateField(default=datetime.date(2100, 1, 1))
     note = models.TextField(blank=True, null=True)
     inventory_id = models.CharField(max_length=100, blank=True, null=True)
 
