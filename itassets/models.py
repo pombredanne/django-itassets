@@ -75,6 +75,8 @@ class Hardware(models.Model):
     owner = models.ForeignKey(Owner, default=1)
  
     def __unicode__(self):
+        if self.hostname and self.hostname != "":
+            return u'%s %s (%s)' % (self.maker, self.name, self.hostname)
         return u'%s %s' % (self.maker, self.name)
 
     class Meta:
