@@ -25,11 +25,11 @@ Quick start
 
 2. Add "itassets" to your INSTALLED_APPS setting like this:
 
-    INSTALLED_APPS = (
-        ...
-        'grappelli'
-        'itassets',
-    )
+        INSTALLED_APPS = (
+            ...
+            'grappelli'
+            'itassets',
+        )
 
 3. Run `python manage.py syncdb` to create the models.
 
